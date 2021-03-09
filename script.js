@@ -1,18 +1,20 @@
 var diff_level = parseInt(prompt("Benvenuto in campominato. Scegli il livello di difficoltà: 0 per FACILE, 1 per NORMALE, 2 per DIFFICILE, 3 per IMPOSSIBILE"));
 var esito; // diventa 23 quando si trova una bomba, ed esce dal ciclo while
 var counter = 0; //tiene il conto di quanti fiori ha trovato
-var outcome ; //frase che ti dice se hai vinto o perso
- 
+var max_flowers = 0;
+var used_array = [];
+var user_choice;
+
 // !! 1) Scelgo il livello per la partita
 if (diff_level == 0) {
     diff_level = "FACILE";
     max_flowers = 100;
 } else if (diff_level == 1) {
-    diff_level = "FACILE";
+    diff_level = "MEDIO";
     max_flowers = 80;
 }else if (diff_level == 2) {
     diff_level = "DIFFICILE";
-    max_flowers = 50;
+    max_flowers = 17;
 }  else {
     alert("Il valore inserito non è valido, riprovare");
     location.reload();
@@ -37,27 +39,30 @@ var bombs = get16RandomUnique(1, max_flowers);
 var flowers =  array.filter(x => !bombs.includes(x));
 console.log( "FINALEEEEEE", bombs, flowers)
 
-//!! 5) faccio scegliere un valore all'utente, tra gli elementi del primo array
-var user_choice = prompt("inserisci un numero tra 1 e " +  max_flowers);
 
-//!! 6) ad ogni scelta di un elemento rimuovo l'elemento dall'array, e faccio andare a buon fine un tentativo solo se l'elemento (il numero) è allinterno dell'array da 1 a max
-while (esito != 23) {
-    // !! 7) se l'utente scegli un valore all'interno dell'array bomb perde
+while (counter != (max_flowers - 16)) {
+    //!! 5) faccio scegliere un valore all'utente, tra gli elementi del primo array
+    user_choice = prompt("inserisci un numero tra 1 e " +  max_flowers);
     if (bombs.includes(user_choice)) {
-        outcome = "HAI PERSO la posizione " + user_choice + "corrisponde ad una bomba";
+        // !! 6) se l'utente scegli un valore all'interno dell'array bomb perde
+        alert( "HAI PERSO la posizione " + user_choice + "corrisponde ad una bomba");
         esito = 23;
-    } else if (used_array.includes(user_choice) {
+    } else if (used_array.includes(user_choice)) {
+        // !! 7) se l'utente sceglie un valore più volte, non perde ma ripete    
         alert ("Attenzione, ha già inserito questo valore ! WAKEY WAKEY")
     }  else {
-        alert("Non è una bomba !!")
+        //!! 8) se l'utente trova un fiore, aggiunge il valore all'array used_array
+        alert(user_choice + " non è una bomba !!");
         counter += 1;
+        used_array.push(user_choice);
+        if (counter == (max_flowers - 16)) {
+            alert ("Hai vinto !")
+        }
     }
 }
 // !! 8) se l'utente sceglie TUTTI gli elementi dell'array flowers vince
 
 
-var flowers = []; //posizioni delle non bombe
-var max_flowers = 0;
 
 function get16RandomUnique(min, max) {
     array_random = [];
