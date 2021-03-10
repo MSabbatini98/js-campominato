@@ -1,12 +1,36 @@
 var diff_level = parseInt(prompt("Benvenuto in campominato. Scegli il livello di difficoltà: 0 per FACILE, 1 per NORMALE, 2 per DIFFICILE, 3 per IMPOSSIBILE"));
+diff_level = numValidator(diff_level);
+
 var counter = 0; //tiene il conto di quanti fiori ha trovato
-var max_flowers = 23;
+var max_flowers = 0;
 var used_array = [];
 var user_choice;
 var outcome;
 var esito = "Hai perso, ritenta";
 
-// !! 1) Scelgo il livello per la partita
+/* trasformo l'istanza if in una switch */
+switch (diff_level) {
+    case 0 :
+        diff_level = "FACILE";
+        max_flowers = 100;
+        break;
+    case 1 :
+        diff_level = "FACILE";
+        max_flowers = 100;
+        break;
+    case 2 :
+        diff_level = "FACILE";
+        max_flowers = 100;
+        break;
+    case 3 :
+        diff_level = "FACILE";
+        max_flowers = 100;
+        break;
+    // Non necessario, in quanto dopo il validatore non sono ammessi altri risultati oltre a 0, 1, 2, 3... easter egg !!
+    default :
+        alert("If you see this you are in danger. Run away from your computer, it's about to explode ");
+}
+/* // !! 1) Scelgo il livello per la partita
 if (diff_level == 0) {
     diff_level = "FACILE";
     max_flowers = 100;
@@ -22,11 +46,9 @@ if (diff_level == 0) {
 }  else {
     alert("Il valore inserito non è valido, riprovare");
     // location.reload();
-}
-// else if (diff_level == 3) {
-//     diff_level = "IMPOSSIBILE"
-//     max_flowers = 100;
-// }
+}         */
+
+
 var min_flowers = max_flowers - 16;
 
 console.log(diff_level, max_flowers);
@@ -110,6 +132,12 @@ function get16RandomUnique(min, max) {
     return array_random;   
 }
 
+function numValidator ( num ) {
+    while(! (!isNaN(num) && num >= 0 && num <= 3)) {
+        num  = parseInt(prompt("Inserisci un valore valido" + "\n 0 per FACILE, 1 per NORMALE, 2 per DIFFICILE, 3 per IMPOSSIBILE"));
+    }
+    return parseInt(num);
+}
 /*
 // ciclo che genera 16 bombe casuali 
 for (var i = 1; i <= 16; i++) {
