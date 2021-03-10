@@ -1,3 +1,38 @@
 body{
-    background-color: blue;
+    background-color: darkturquoise;
+    font-family: 'Akaya Kanadaka', cursive;
+    color: blue;    
+}
+
+h1{
+    font-weight: bolder;
+    font-size: 90px;
+    text-align: center;
+}
+.main_box{
+    width: 60%;
+    margin: auto;
+    border-radius: 20px;
+    border : black solid 15px;
+    padding: 25px;
+}
+ul {
+    font-weight: 400;
+    color: white;
+    font-size: 20px;
+}
+span {
+    font-size: 30px;
+}
+#turni {
+    color: gray;
+}
+#esito{
+    color: yellow;
+}
+#bombs_location{
+    color: red;
+}
+#flowers{
+    color: green;
 }

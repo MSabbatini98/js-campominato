@@ -1,9 +1,10 @@
 var diff_level = parseInt(prompt("Benvenuto in campominato. Scegli il livello di difficoltà: 0 per FACILE, 1 per NORMALE, 2 per DIFFICILE, 3 per IMPOSSIBILE"));
-var esito; // diventa 23 quando si trova una bomba, ed esce dal ciclo while
 var counter = 0; //tiene il conto di quanti fiori ha trovato
-var max_flowers = 0;
+var max_flowers = 23;
 var used_array = [];
 var user_choice;
+var outcome;
+var esito = "Hai perso, ritenta";
 
 // !! 1) Scelgo il livello per la partita
 if (diff_level == 0) {
@@ -14,15 +15,20 @@ if (diff_level == 0) {
     max_flowers = 80;
 }else if (diff_level == 2) {
     diff_level = "DIFFICILE";
+    max_flowers = 50;
+}else if (diff_level == 3) {
+    diff_level = "IMPOSSIBILE";
     max_flowers = 17;
 }  else {
     alert("Il valore inserito non è valido, riprovare");
-    location.reload();
+    // location.reload();
 }
 // else if (diff_level == 3) {
 //     diff_level = "IMPOSSIBILE"
 //     max_flowers = 100;
 // }
+var min_flowers = max_flowers - 16;
+
 console.log(diff_level, max_flowers);
 
 //!!  2) riempio array con tutti i numero da 1 a 100
@@ -37,47 +43,68 @@ var bombs = get16RandomUnique(1, max_flowers);
 
 //!! 4) salvo il vecchio array nel nuovo array
 var flowers =  array.filter(x => !bombs.includes(x));
-console.log( "FINALEEEEEE", bombs, flowers)
+console.log( "FINALEEEEEE", bombs, flowers);
 
 
-while (counter <= (max_flowers - 16)) {
+if (max_flowers == 23) {
+    alert("c'è stato un problema nel programma : PRATO FIORITO, la preghiamo di ricaricare e riprovare");
+    fail;
+}
+while (counter < min_flowers) {
+    console.log( "STO QUI");
     //!! 5) faccio scegliere un valore all'utente, tra gli elementi del primo array
-    user_choice = prompt("inserisci un numero tra 1 e " +  max_flowers);
+    user_choice = parseInt(prompt("inserisci un numero tra 1 e " +  max_flowers));
     if (bombs.includes(user_choice)) {
         // !! 6) se l'utente scegli un valore all'interno dell'array bomb perde
-        alert( "HAI PERSO, la posizione " + user_choice + "corrisponde ad una bomba");
+        // alert( "HAI PERSO, la posizione " + user_choice + " corrisponde ad una bomba");
+        outcome = "HAI PERSO in " + counter + " turni , la posizione " + user_choice + " corrisponde ad una bomba";
         break; //counter = 10000;
     } else if (used_array.includes(user_choice)) {
         // !! 7) se l'utente sceglie un valore più volte, non perde ma ripete    
         alert ("Attenzione, ha già inserito questo valore ! WAKEY WAKEY")
-    }  else {
+    }  else if (!isNaN(user_choice) && user_choice <= max_flowers) {
         //!! 8) se l'utente trova un fiore, aggiunge il valore all'array used_array
         console.log("Hai inserito l'elemento ", user_choice);
         // alert(user_choice + " non è una bomba !!");
         counter += 1;
         used_array.push(user_choice);
-        if (counter == (max_flowers - 16)) {
+        if (counter == (min_flowers)) {
             // alert ("Hai vinto !")
             console.log("Hai vinto tutto!!!")
+            esito = "VITTORIA !! COMPLIMENTI !!" ;
+            break;
         }
+    } else {
+        alert ("Attenzione, questo valore non è valido");
     }
 }
 // !! 8) se l'utente sceglie TUTTI gli elementi dell'array flowers vince
-document.getElementById("outcome").innerHTML = outcome;
+// document.getElementById("outcome").innerHTML = outcome;
+document.getElementById("turni").innerHTML = counter;
+document.getElementById("bombs_location").innerHTML = bombs;
+document.getElementById("esito").innerHTML = esito;
+document.getElementById("flowers").innerHTML = used_array;
+
 
 
 function get16RandomUnique(min, max) {
+    max = max + 1
+    var counter_f = 0;
     array_random = [];
     while (array_random.length <= 15) {
         random_value = Math.floor(Math.random() * (max - min)) + min;
-
         if (array_random.includes(random_value) == false) {
             array_random.push(random_value);
-            console.log(random_value);
+            console.log("inserito in array_random " + random_value);
         } else {
-            console.log (random_value);
+            console.log ("già ripetuto" + random_value);
+            counter_f += 1;
+            if (counter_f > 1000){
+                alert("controlla la console per POSSIBILE ciclo infinito in corso");
+            }
         }
     }
+    //ordina l'array in ordine numerico (non alfabetico)
     array_random = array_random.sort((a, b) => a - b);
     console.log("array ordinato", array_random);
     return array_random;   
